@@ -3,9 +3,10 @@
 </script>
 
 <template>
-  <div></div>
+  <div>
+    <!-- hello功能 -->
+    <h1>Hello</h1>
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
