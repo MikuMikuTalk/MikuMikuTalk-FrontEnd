@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+
+// 引入自定义css
+import '@assets/base.css'
+
 //引入element plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
