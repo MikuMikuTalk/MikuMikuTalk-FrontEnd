@@ -30,6 +30,21 @@ const router = createRouter({
                         }
                     ]
                 },
+                {
+                    path: "session",
+                    name: "session",
+                    component: ()=>import("@views/web/session/index.vue")
+                },
+                {
+                    path: "info",
+                    name: "info",
+                    component: ()=>import("@views/web/info/index.vue")
+                },
+                {
+                    path: "notice",
+                    name: "notice",
+                    component: ()=>import("@views/web/notice/index.vue")
+                }
               
             ]
         }
