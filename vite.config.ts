@@ -1,6 +1,7 @@
 import {defineConfig, loadEnv} from 'vite'
 import path from "path";
 import vue from '@vitejs/plugin-vue'
+import type {ImportMetaEnv} from "./.env";
 // https://vite.dev/config/
 export default defineConfig(
     ({mode}) => {
@@ -25,7 +26,14 @@ export default defineConfig(
                         "@assets": path.resolve(__dirname, "src/assets")
                     },
                 },
-                envDir: "."
+                envDir: ".",
+                css: {
+                    preprocessorOptions: {
+                        scss: {
+                            api: 'modern-compiler' // or "modern"
+                        }
+                    }
+                }
             }
         )
     }
