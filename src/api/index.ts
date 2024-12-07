@@ -16,7 +16,18 @@ export interface listResponse<T> {
     count: number
     list: T[]
 }
+export interface authLoginRequest {
+    "userName": string
+    "password": string
+}
 
+export interface authLoginResponse {
+    token: string
+}
+
+export function authLoginApi(data: authLoginRequest): Promise<baseResponse<authLoginResponse>> {
+    return useAxios.post("/api/auth/login", data)
+}
 
 //请求拦截器
 useAxios.interceptors.request.use((config) => {

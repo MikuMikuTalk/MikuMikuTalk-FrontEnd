@@ -4,7 +4,9 @@
 
 <template>
   <div class="main">
-    <div class="background-blur"></div>
+    <div class="background-blur">
+      <apiDemo />
+    </div>
 
     <RouterView/>
   </div>
