@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import {reactive} from "vue";
+import {authLoginApi, IAuthLoginRequest, IAuthLoginResponse} from "@/api/auth_api.ts";
+import {baseResponse} from "@/api";
+import {ElMessage} from "element-plus";
+import {parseToken} from "@/utils/parseToken.ts";
 
-const form = reactive({
-  userName: "",
+const form = reactive<IAuthLoginRequest>({
+  username: "",
   password: "",
 })
+
+async function login() {
+  let res: baseResponse<IAuthLoginResponse> = await authLoginApi(form);
+  if (res.code) {
+    ElMessage.error(res.msg)
+    return
+  }
+  console.log("jwt token: ",res.data)
+  const payload = parseToken(res.data.token)
+  console.log(payload)
+  ElMessage.success(res.msg)
+}
 </script>
 
 <template>
@@ -15,13 +31,13 @@ const form = reactive({
     <div class="login_form">
       <el-form :model="form">
         <el-form-item>
-          <el-input v-model="form.userName" placeholder="用户名">
+          <el-input v-model="form.username" placeholder="用户名">
 
           </el-input>
         </el-form-item>
 
         <el-form-item class="item_password">
-          <el-input v-model="form.password" placeholder="密码">
+          <el-input v-model="form.password" placeholder="密码" type="password">
 
           </el-input>
         </el-form-item>
@@ -31,7 +47,7 @@ const form = reactive({
         </el-form-item>
 
         <el-form-item class="item_btn">
-          <el-button style="width: 100%" type="primary">登录</el-button>
+          <el-button style="width: 100%" type="primary" @click="login">登录</el-button>
         </el-form-item>
 
       </el-form>
@@ -58,6 +74,7 @@ const form = reactive({
     background-size: cover;
     text-align: center;
     position: relative;
+
     &::after {
       content: "MikuMikuTalk";
       position: absolute;
