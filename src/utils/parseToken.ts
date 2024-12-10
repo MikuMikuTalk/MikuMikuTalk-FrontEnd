@@ -1,7 +1,7 @@
 export interface ITokenPayload {
     userID: number
     nickname: string
-    role: string
+    role: number
     exp: number
     jti: string
 }

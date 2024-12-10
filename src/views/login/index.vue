@@ -3,8 +3,17 @@ import {reactive} from "vue";
 import {authLoginApi, IAuthLoginRequest, IAuthLoginResponse} from "@/api/auth_api.ts";
 import {baseResponse} from "@/api";
 import {ElMessage} from "element-plus";
-import {parseToken} from "@/utils/parseToken.ts";
+//引入useRouter
+import {useRouter} from "vue-router";
+//引入pinia 的用户存储
+import {useUserStore} from "@/stores";
 
+//使用router进行跳转，router文档请查看 https://router.vuejs.org/zh/guide/essentials/navigation.html
+const router = useRouter()
+//引入pinia 的用户存储，对用户数据进行存储
+const user_store = useUserStore()
+
+// 创建一个响应式对象，类型为 IAuthLoginRequest
 const form = reactive<IAuthLoginRequest>({
   username: "",
   password: "",
@@ -16,10 +25,13 @@ async function login() {
     ElMessage.error(res.msg)
     return
   }
-  console.log("jwt token: ",res.data)
-  const payload = parseToken(res.data.token)
-  console.log(payload)
-  ElMessage.success(res.msg)
+  //存储并设置用户 --> 读取jwt信息并解析，存储到localstorage中
+  user_store.setUserInfo(res.data.token)
+  ElMessage.success("登录成功")
+  //重定向: 重定向是自动将访问者发送到另一个页面（条目或者条目的章节）的页面
+  await router.push({
+    name: "web"
+  })
 }
 </script>
 

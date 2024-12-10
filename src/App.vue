@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import {useUserStore} from "@/stores";
 
+const store = useUserStore()
+store.loadUserInfo()
 </script>
 
 <template>
