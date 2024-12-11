@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores';
 import axios, { AxiosInstance } from 'axios';
 
 import { ElMessage } from 'element-plus';
@@ -19,6 +20,8 @@ export interface listResponse<T> {
 
 //请求拦截器
 useAxios.interceptors.request.use((config) => {
+	const store = useUserStore();
+	config.headers['Authorization'] = store.userInfo.token;
 	return config;
 });
 //响应拦截器
