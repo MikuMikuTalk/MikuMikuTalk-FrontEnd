@@ -1,3 +1,5 @@
+import { useUserStore } from '@/stores';
+import { ElMessage } from 'element-plus';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -74,8 +76,30 @@ const router = createRouter({
 					component: () => import('@views/web/notice/index.vue'),
 				},
 			],
+			// https://router.vuejs.org/zh/api/interfaces/RouteLocation.html#Properties-meta
+			meta: {
+				isLogin: true, // 开启登陆验证 设置为false就不进行登录验证==》就算没登录也能进主页面
+			},
 		},
 	],
 });
 
+//https://router.vuejs.org/zh/guide/advanced/navigation-guards
+router.beforeEach((to, from, next) => {
+	if (to.meta.isLogin === true) {
+		//查一下用户是否登录
+		const store = useUserStore();
+		if (!store.isLogin) {
+			router.push({
+				name: 'login',
+				query: {
+					redirect_url: from.path,
+				},
+			});
+			ElMessage.warning('请登录');
+			return;
+		}
+	}
+	next();
+});
 export default router;

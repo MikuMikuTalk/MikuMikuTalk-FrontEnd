@@ -36,7 +36,13 @@ export const useUserStore = defineStore('user', {
 		userInfo: userInfo,
 		userProfile: userProfile,
 	}),
-	getters: {},
+	getters: {
+		// 返回是否登陆的状态
+		isLogin(): boolean {
+			// exp的时间戳-现在的时间戳  为正就是没有过期
+			return this.userInfo.token != '' && this.userInfo.exp > 0;
+		},
+	},
 	actions: {
 		async setUserInfo(token: string) {
 			const payload: ITokenPayload = parseToken(token);
