@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores';
 
 const store = useUserStore();
 store.loadUserInfo();
+store.loadUserProfile();
 </script>
 
 <template>
