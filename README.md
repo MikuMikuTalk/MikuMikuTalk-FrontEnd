@@ -4,8 +4,6 @@ This template should help get you started developing with Vue 3 and TypeScript i
 
 Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
 
-
-
 # 项目搭建
 
 fork项目
@@ -22,11 +20,13 @@ npm install pnpm
 ```
 
 安装相关库
+
 ```bash
 pnpm install
 ```
 
 启动项目
+
 ```bash
 pnpm run dev
 ```

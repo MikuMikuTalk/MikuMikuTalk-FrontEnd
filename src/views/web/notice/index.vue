@@ -1,11 +1,7 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div>系统消息</div>
+	<div>系统消息</div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

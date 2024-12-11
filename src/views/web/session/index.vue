@@ -1,11 +1,7 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div>绘画列表</div>
+	<div>绘画列表</div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
