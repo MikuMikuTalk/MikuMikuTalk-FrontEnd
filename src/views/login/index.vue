@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {reactive} from "vue";
-import {authLoginApi, IAuthLoginRequest, IAuthLoginResponse} from "@/api/auth_api.ts";
-import {baseResponse} from "@/api";
-import {ElMessage} from "element-plus";
+import { reactive, ref } from "vue";
+import { authLoginApi, IAuthLoginRequest, IAuthLoginResponse } from "@/api/auth_api.ts";
+import { baseResponse } from "@/api";
+import { ElMessage, type FormRules } from "element-plus";
 //引入useRouter
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 //引入pinia 的用户存储
-import {useUserStore} from "@/stores";
+import { useUserStore } from "@/stores";
 
 //使用router进行跳转，router文档请查看 https://router.vuejs.org/zh/guide/essentials/navigation.html
 const router = useRouter()
@@ -14,12 +14,31 @@ const router = useRouter()
 const user_store = useUserStore()
 
 // 创建一个响应式对象，类型为 IAuthLoginRequest
-const form = reactive<IAuthLoginRequest>({
+interface RuleForm extends IAuthLoginRequest {
+}
+const form = reactive<RuleForm>({
   username: "",
   password: "",
 })
 
+// 定义表单规则 文档:https://element-plus.org/zh-CN/component/form.html
+const rules = reactive<FormRules<RuleForm>>({
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+  ]
+})
+
+const formRef = ref()
+
+
 async function login() {
+  let val = await formRef.value.validate()
+  if (!val) {
+    return
+  }
   let res: baseResponse<IAuthLoginResponse> = await authLoginApi(form);
   if (res.code) {
     ElMessage.error(res.msg)
@@ -33,6 +52,8 @@ async function login() {
     name: "web"
   })
 }
+
+
 </script>
 
 <template>
@@ -41,14 +62,14 @@ async function login() {
 
     </div>
     <div class="login_form">
-      <el-form :model="form">
-        <el-form-item>
+      <el-form ref="formRef" :model="form" :rules="rules">
+        <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="用户名">
 
           </el-input>
         </el-form-item>
 
-        <el-form-item class="item_password">
+        <el-form-item prop="password" class="item_password">
           <el-input v-model="form.password" placeholder="密码" type="password">
 
           </el-input>
@@ -61,6 +82,10 @@ async function login() {
         <el-form-item class="item_btn">
           <el-button style="width: 100%" type="primary" @click="login">登录</el-button>
         </el-form-item>
+        <!-- 添加注册超链接 -->
+        <div class="register_link">
+          <router-link to="/register">没有账号？立即注册</router-link>
+        </div>
 
       </el-form>
     </div>
@@ -70,7 +95,7 @@ async function login() {
 <style scoped lang="scss">
 .miku_login {
   width: 500px;
-  height: 400px;
+  height: 420px;
   background-color: whitesmoke;
   border-radius: 10px;
   overflow: hidden;
@@ -101,8 +126,25 @@ async function login() {
   .login_form {
     padding: 20px 80px;
 
-    .item_password, .item_action, .item_btn {
+    .item_password,
+    .item_action,
+    .item_btn {
       margin-bottom: 6px
+    }
+  }
+
+  .register_link {
+    margin-top: 5px;
+    text-align: center;
+
+    a {
+      color: #409eff;
+      font-size: 13px;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
