@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus';
 
 export const useAxios: AxiosInstance = axios.create({
 	baseURL: '',
+	timeout: 3000, //超时设置为3s
 });
 
 export interface baseResponse<T> {
