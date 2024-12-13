@@ -45,6 +45,7 @@ export const useUserStore = defineStore('user', {
 	},
 	actions: {
 		async setUserInfo(token: string) {
+			//获取jwt的payload，并解析其中的信息并且保存起来
 			const payload: ITokenPayload = parseToken(token);
 			Object.assign(this.userInfo, {
 				token: token,
@@ -54,6 +55,11 @@ export const useUserStore = defineStore('user', {
 				exp: payload.exp,
 				jti: payload.jti,
 			});
+
+			//持久化
+			this.saveUserInfo();
+		},
+		async setUserProfile() {
 			//获取用户profile
 			const res = await userProfileApi(this.userInfo.nickname);
 			if (res.code) {
@@ -76,7 +82,6 @@ export const useUserStore = defineStore('user', {
 				verificationQuestion: res.data.verificationQuestion,
 			});
 			//持久化
-			this.saveUserInfo();
 			this.saveUserProfile();
 		},
 		saveUserInfo() {
