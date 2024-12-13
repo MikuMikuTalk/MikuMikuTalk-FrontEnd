@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useUserStore } from '@/stores';
+const store = useUserStore();
+//请求用户配置接口，获取用户信息
+store.setUserProfile();
+</script>
 
 <template>
 	<div class="miku_info_body">

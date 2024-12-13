@@ -8,6 +8,7 @@ function checkMenu(menu: string) {
 	router.push({ path: menu });
 }
 const store = useUserStore()
+
 </script>
 <template>
 	<div class="miku_web">
@@ -38,8 +39,10 @@ const store = useUserStore()
 				</div>
 			</div>
 		</div>
+		<div class="miku_main">
+			<RouterView />
+		</div>
 
-		<RouterView />
 	</div>
 </template>
 <style lang="scss" scoped>
@@ -109,6 +112,10 @@ const store = useUserStore()
 	.other {
 		position: absolute;
 		bottom: 20px;
+	}
+
+	.miku_main {
+		width: calc(100% - 80px);
 	}
 }
 </style>
