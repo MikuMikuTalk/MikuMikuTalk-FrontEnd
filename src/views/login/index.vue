@@ -4,12 +4,13 @@ import { authLoginApi, IAuthLoginRequest, IAuthLoginResponse } from '@/api/auth_
 import { baseResponse } from '@/api';
 import { ElMessage, type FormRules } from 'element-plus';
 //引入useRouter
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 //引入pinia 的用户存储
 import { useUserStore } from '@/stores';
 
 //使用router进行跳转，router文档请查看 https://router.vuejs.org/zh/guide/essentials/navigation.html
 const router = useRouter();
+const route = useRoute();
 //引入pinia 的用户存储，对用户数据进行存储
 const user_store = useUserStore();
 
@@ -42,6 +43,14 @@ async function login() {
 	user_store.setUserInfo(res.data.token);
 	ElMessage.success('登录成功');
 	//重定向: 重定向是自动将访问者发送到另一个页面（条目或者条目的章节）的页面
+	// 要是从其它页面过来的，登陆成功后，就跳转到那个页面
+	const redirestUrl:string = route.query.redirect_url as string
+	if(redirestUrl) {
+		router.push({
+			path: redirestUrl
+		})
+	}
+
 	await router.push({
 		name: 'web',
 	});
