@@ -40,7 +40,8 @@ async function login() {
 		return;
 	}
 	//存储并设置用户 --> 读取jwt信息并解析，存储到localstorage中
-	user_store.setUserInfo(res.data.token);
+	await user_store.setUserInfo(res.data.token);
+  await user_store.setUserProfile();
 	ElMessage.success('登录成功');
 	//重定向: 重定向是自动将访问者发送到另一个页面（条目或者条目的章节）的页面
 	// 要是从其它页面过来的，登陆成功后，就跳转到那个页面

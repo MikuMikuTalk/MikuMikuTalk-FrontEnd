@@ -23,7 +23,7 @@ const userProfile: IUserProfileType = {
 	avatar: '',
 	recallMessage: '',
 	friendOnline: true,
-	sound: true,
+	enableSound: true,
 	secureLink: false,
 	savePwd: false,
 	searchUser: 2,
@@ -61,7 +61,7 @@ export const useUserStore = defineStore('user', {
 		},
 		async setUserProfile() {
 			//获取用户profile
-			const res = await userProfileApi(this.userInfo.nickname);
+			const res = await userProfileApi();
 			if (res.code) {
 				ElMessage.error(res.msg);
 				return;
@@ -74,7 +74,7 @@ export const useUserStore = defineStore('user', {
 				avatar: res.data.avatar,
 				recallMessage: res.data.recallMessage,
 				friendOnline: res.data.friendOnline,
-				sound: res.data.sound,
+				enableSound: res.data.enableSound,
 				secureLink: res.data.secureLink,
 				savePwd: res.data.savePwd,
 				searchUser: res.data.searchUser,
