@@ -27,6 +27,7 @@ export default [
 		// 配置规则
 		rules: {
 			'vue/multi-word-component-names': 'off',
+			"@typescript-eslint/no-unused-vars": ["off"]
 		},
 	},
 ];

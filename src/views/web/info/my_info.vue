@@ -1,41 +1,63 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores';
 import { nextTick, ref } from 'vue';
-import { userProfileUpdateApi } from '@/api/user_api.ts';
+import { IUserProfileUpdateType, userProfileUpdateApi } from '@/api/user_api.ts';
 import { ElMessage } from 'element-plus';
 
 const store = useUserStore();
-const showEdit = ref(false);
-const editNickNameRef = ref();
-const oldNickname = ref('');
 
-function editNickName(oldValue: string) {
-	//设置为可编辑状态
-	showEdit.value = true;
+const list = ref([
+	{
+		label: "昵称",
+		isShowIpt: false,
+		maxLength: 13,
+		val: store.userProfile.nickname,
+		type: "text",
+		old: "",
+		key: "nickname"
+	},
+	{
+		label: "个性签名",
+		isShowIpt: false,
+		maxLength: 1000,
+		val: store.userProfile.abstract,
+		type: "text",
+		rows: 3,
+		old: "",
+		key: "abstract"
+	}
+]);
 
-	oldNickname.value = oldValue;
+const editRefList = ref();
+function edit(index: number) {
+	list.value[index].isShowIpt = true;
+	list.value[index].old = list.value[index].val;
 	nextTick(() => {
-		editNickNameRef.value.focus();
+		if (editRefList.value.length) {
+			editRefList.value[0].focus();
+		}
 	});
 }
 
-async function editNickNameBlur() {
-	//设置为不可编辑状态
-	showEdit.value = false;
-
-	//变化了才执行更新
-	if (oldNickname.value !== store.userProfile.nickname) {
-		let res = await userProfileUpdateApi({
-			nickname: store.userProfile.nickname,
-		});
-		if (res.code) {
-			ElMessage.error(res.msg);
-			return;
-		}
-		ElMessage.success(res.msg);
+async function blur(index: number) {
+	list.value[index].isShowIpt = false;
+	if (list.value[index].old === list.value[index].val) {
+		return;
 	}
+
+	let data: IUserProfileUpdateType = {
+		[list.value[index].key]: list.value[index].val
+	};
+	let res = await userProfileUpdateApi(data);
+
+	if (res.code) {
+		ElMessage.error(res.msg);
+		return;
+	}
+	ElMessage.success(list.value[index].label + "修改成功");
 }
 </script>
+
 <template>
 	<div class="miku_my_info_view">
 		<el-form-item label="头像">
@@ -44,31 +66,18 @@ async function editNickNameBlur() {
 		<el-form-item label="用户id">
 			<span>{{ store.userProfile.userID }}</span>
 		</el-form-item>
-		<el-form-item label="昵称">
-			<span v-if="!showEdit">{{ store.userProfile.nickname }}</span>
-			<el-input
-				ref="editNickNameRef"
-				:maxlength="16"
-				@blur="editNickNameBlur"
-				v-else
-				class="edit_nickname_ipt"
-				placeholder="修改昵称"
-				v-model="store.userProfile.nickname"
-			></el-input>
-			<el-button @click="editNickName(store.userProfile.nickname as string)">编辑</el-button>
-		</el-form-item>
-		<el-form-item label="简介">
-			<span>{{ store.userProfile.abstract }}</span>
-			<i class="iconfont icon-bianji"></i>
+		<el-form-item :label="item.label" v-for="(item, index) in list" :key="item.key">
+			<span v-if="!item.isShowIpt">{{ item.val }}</span>
+			<el-input v-else ref="editRefList" :maxlength="item.maxLength" :rows="item.rows" :type="item.type"
+				@blur="blur(index)" class="edit_ipt" v-model="item.val" :placeholder="'修改' + item.label"></el-input>
+			<el-button @click="edit(index)">修改</el-button>
 		</el-form-item>
 	</div>
 </template>
 
 <style lang="scss" scoped>
-.miku_my_info_view {
-}
-.edit_nickname_ipt {
-  display: inline-flex;
-  width: 200px;
+.edit_ipt {
+	display: inline-flex;
+	width: 200px;
 }
 </style>
