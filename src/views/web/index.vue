@@ -7,8 +7,7 @@ const router = useRouter();
 function checkMenu(menu: string) {
 	router.push({ path: menu });
 }
-const store = useUserStore()
-
+const store = useUserStore();
 </script>
 <template>
 	<div class="miku_web">
@@ -42,7 +41,6 @@ const store = useUserStore()
 		<div class="miku_main">
 			<RouterView />
 		</div>
-
 	</div>
 </template>
 <style lang="scss" scoped>
@@ -83,7 +81,7 @@ const store = useUserStore()
 		flex-direction: column;
 		align-items: center;
 
-		>div {
+		> div {
 			margin-bottom: 20px;
 		}
 	}

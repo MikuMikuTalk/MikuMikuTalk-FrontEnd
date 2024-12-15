@@ -41,7 +41,6 @@ export interface IUserProfileUpdateType {
 	verificationQuestion?: IVerificationQuestionType;
 }
 
-
 /**
  *
  * userInfoApi(string)  获取指定用户的用户信息
@@ -51,7 +50,6 @@ export function userProfileApi(): Promise<baseResponse<IUserProfileType>> {
 	return useAxios.get('/api/user/info');
 }
 
-
 /**
  * Updates the user's profile with the provided data.
  * Sends a PUT request to the server with the user's updated profile information.
@@ -59,5 +57,5 @@ export function userProfileApi(): Promise<baseResponse<IUserProfileType>> {
  * @returns A promise resolving to a baseResponse containing a string indicating the result of the update operation.
  */
 export function userProfileUpdateApi(data: IUserProfileUpdateType): Promise<baseResponse<string>> {
-	return useAxios.put('/api/user/info',data)
+	return useAxios.put('/api/user/info', data);
 }
