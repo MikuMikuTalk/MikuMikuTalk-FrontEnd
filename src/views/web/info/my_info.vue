@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import { IUserProfileUpdateType, userProfileUpdateApi } from '@/api/user_api.ts';
 import { ElMessage } from 'element-plus';
+
 
 const store = useUserStore();
 
@@ -22,7 +23,7 @@ const list = ref([
 		maxLength: 1000,
 		val: store.userProfile.abstract,
 		type: "text",
-		rows: 3,
+		rows: 5,
 		old: "",
 		key: "abstract"
 	}
@@ -56,6 +57,11 @@ async function blur(index: number) {
 	}
 	ElMessage.success(list.value[index].label + "修改成功");
 }
+watch(() => store.userProfile, () => {
+	list.value[0].val = store.userProfile.nickname
+	list.value[1].val = store.userProfile.abstract
+}, { deep: true })
+
 </script>
 
 <template>
