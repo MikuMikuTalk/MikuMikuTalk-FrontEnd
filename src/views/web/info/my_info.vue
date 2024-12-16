@@ -4,32 +4,32 @@ import { nextTick, ref, watch } from 'vue';
 import { IUserProfileUpdateType, userProfileUpdateApi } from '@/api/user_api.ts';
 import { ElMessage } from 'element-plus';
 
-
 const store = useUserStore();
 
 const list = ref([
 	{
-		label: "昵称",
+		label: '昵称',
 		isShowIpt: false,
 		maxLength: 13,
 		val: store.userProfile.nickname,
-		type: "text",
-		old: "",
-		key: "nickname"
+		type: 'text',
+		old: '',
+		key: 'nickname',
 	},
 	{
-		label: "个性签名",
+		label: '个性签名',
 		isShowIpt: false,
 		maxLength: 1000,
 		val: store.userProfile.abstract,
-		type: "text",
+		type: 'text',
 		rows: 5,
-		old: "",
-		key: "abstract"
-	}
+		old: '',
+		key: 'abstract',
+	},
 ]);
 
 const editRefList = ref();
+
 function edit(index: number) {
 	list.value[index].isShowIpt = true;
 	list.value[index].old = list.value[index].val;
@@ -47,7 +47,7 @@ async function blur(index: number) {
 	}
 
 	let data: IUserProfileUpdateType = {
-		[list.value[index].key]: list.value[index].val
+		[list.value[index].key]: list.value[index].val,
 	};
 	let res = await userProfileUpdateApi(data);
 
@@ -55,13 +55,19 @@ async function blur(index: number) {
 		ElMessage.error(res.msg);
 		return;
 	}
-	ElMessage.success(list.value[index].label + "修改成功");
+	ElMessage.success(list.value[index].label + '修改成功');
+	//修改成功后 更新store
+	await store.setUserProfile();
 }
-watch(() => store.userProfile, () => {
-	list.value[0].val = store.userProfile.nickname
-	list.value[1].val = store.userProfile.abstract
-}, { deep: true })
 
+watch(
+	() => store.userProfile,
+	() => {
+		list.value[0].val = store.userProfile.nickname;
+		list.value[1].val = store.userProfile.abstract;
+	},
+	{ deep: true, immediate: true }
+);
 </script>
 
 <template>
@@ -74,8 +80,17 @@ watch(() => store.userProfile, () => {
 		</el-form-item>
 		<el-form-item :label="item.label" v-for="(item, index) in list" :key="item.key">
 			<span v-if="!item.isShowIpt">{{ item.val }}</span>
-			<el-input v-else ref="editRefList" :maxlength="item.maxLength" :rows="item.rows" :type="item.type"
-				@blur="blur(index)" class="edit_ipt" v-model="item.val" :placeholder="'修改' + item.label"></el-input>
+			<el-input
+				v-else
+				ref="editRefList"
+				:maxlength="item.maxLength"
+				:rows="item.rows"
+				:type="item.type"
+				@blur="blur(index)"
+				class="edit_ipt"
+				v-model="item.val"
+				:placeholder="'修改' + item.label"
+			></el-input>
 			<el-button @click="edit(index)">修改</el-button>
 		</el-form-item>
 	</div>

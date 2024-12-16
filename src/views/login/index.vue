@@ -4,7 +4,7 @@ import { authLoginApi, IAuthLoginRequest, IAuthLoginResponse } from '@/api/auth_
 import { baseResponse } from '@/api';
 import { ElMessage, type FormRules } from 'element-plus';
 //引入useRouter
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 //引入pinia 的用户存储
 import { useUserStore } from '@/stores';
 
@@ -41,15 +41,15 @@ async function login() {
 	}
 	//存储并设置用户 --> 读取jwt信息并解析，存储到localstorage中
 	await user_store.setUserInfo(res.data.token);
-  await user_store.setUserProfile();
+	await user_store.setUserProfile();
 	ElMessage.success('登录成功');
 	//重定向: 重定向是自动将访问者发送到另一个页面（条目或者条目的章节）的页面
 	// 要是从其它页面过来的，登陆成功后，就跳转到那个页面
-	const redirestUrl:string = route.query.redirect_url as string
-	if(redirestUrl) {
+	const redirestUrl: string = route.query.redirect_url as string;
+	if (redirestUrl) {
 		router.push({
-			path: redirestUrl
-		})
+			path: redirestUrl,
+		});
 	}
 
 	await router.push({
