@@ -78,7 +78,7 @@ const router = createRouter({
 			],
 			// https://router.vuejs.org/zh/api/interfaces/RouteLocation.html#Properties-meta
 			meta: {
-				isLogin: true, // 开启登陆验证 设置为false就不进行登录验证==》就算没登录也能进主页面
+				isLogin:true, // 开启登陆验证 设置为false就不进行登录验证==》就算没登录也能进主页面
 			},
 		},
 	],
