@@ -15,8 +15,13 @@ import router from './router';
 //引入pinia https://pinia.vuejs.org/zh/core-concepts/
 import { createPinia } from 'pinia';
 
+// 引入Vue-Cropper@next 进行图片裁剪
+import VueCropper from 'vue-cropper';
+import 'vue-cropper/dist/index.css';
+
 const app = createApp(App);
 app.use(ElementPlus);
 app.use(createPinia());
 app.use(router);
+app.use(VueCropper);
 app.mount('#app');
