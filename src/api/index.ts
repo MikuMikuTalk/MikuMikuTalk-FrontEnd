@@ -19,6 +19,11 @@ export interface listResponse<T> {
 	list: T[];
 }
 
+export interface paramsType {
+	limit?:number
+	page?:number
+	key?:string
+}
 //请求拦截器
 useAxios.interceptors.request.use((config) => {
 	const store = useUserStore();

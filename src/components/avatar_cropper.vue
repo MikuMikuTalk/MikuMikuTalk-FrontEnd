@@ -133,7 +133,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, reactive, defineEmits } from 'vue';
+import { ref, watch, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { CirclePlus, Remove, RefreshRight } from '@element-plus/icons-vue';
 import { uploadImageApi } from '@/api/file_api';
